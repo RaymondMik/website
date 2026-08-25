@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { readingTime } from '../utils/readingTime';
+
+interface Props {
+  post: CollectionEntry<'writing'>;
+}
+
+const { post } = Astro.props;
+---
+
+<li>
+  <a href={`/writing/${post.id}/`} class="group block py-4">
+    <span
+      class="block font-display font-semibold tracking-tight text-lg leading-snug group-hover:text-accent transition-colors"
+    >{post.data.title}</span>
+    <span class="mt-1 block font-mono text-xs text-muted">{readingTime(post)}</span>
+  </a>
+</li>

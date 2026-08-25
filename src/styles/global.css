@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-display: "Archivo Variable", "Archivo", system-ui, sans-serif;
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+:root {
+  --c-paper: #f7f7f5;
+  --c-ink: #16181d;
+  --c-muted: #5b6069;
+  --c-line: #e2e2dd;
+  --c-accent: #2742d9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-paper: #101216;
+    --c-ink: #e8e8e4;
+    --c-muted: #999ea8;
+    --c-line: #24262c;
+    --c-accent: #93a0ff;
+  }
+}
+
+/* Expose the light/dark-aware colors as Tailwind utilities (bg-paper, text-ink, …) */
+@theme inline {
+  --color-paper: var(--c-paper);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-accent: var(--c-accent);
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Article prose */
+.prose {
+  --tw-prose-body: var(--c-ink);
+  --tw-prose-headings: var(--c-ink);
+  --tw-prose-links: var(--c-accent);
+  --tw-prose-bold: var(--c-ink);
+  --tw-prose-quotes: var(--c-muted);
+  --tw-prose-quote-borders: var(--c-line);
+  --tw-prose-code: var(--c-ink);
+  --tw-prose-hr: var(--c-line);
+  --tw-prose-th-borders: var(--c-line);
+  --tw-prose-td-borders: var(--c-line);
+  --tw-prose-captions: var(--c-muted);
+  --tw-prose-counters: var(--c-muted);
+  --tw-prose-bullets: var(--c-line);
+  --tw-prose-pre-bg: transparent;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.prose pre {
+  border: 1px solid var(--c-line);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.prose a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Shiki dual-theme: switch highlighted code to its dark palette in dark mode */
+.astro-code {
+  background-color: transparent !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+  }
+}

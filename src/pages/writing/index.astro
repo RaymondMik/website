@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostRow from "../../components/PostRow.astro";
+
+const posts = (await getCollection("writing", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout
+  title="Writing"
+  description="Personal notes and thoughts on software engineering by Ramón Miklus."
+>
+  <h1
+    class="font-display font-extrabold tracking-tight text-3xl sm:text-4xl leading-tight"
+  >
+    Writing
+  </h1>
+  <p class="mt-4 text-muted leading-relaxed max-w-prose">
+    Personal notes and thoughts on software engineering.
+  </p>
+
+  <ul class="mt-12 divide-y divide-line border-t border-line">
+    {posts.map((post) => <PostRow post={post} />)}
+  </ul>
+</Layout>
