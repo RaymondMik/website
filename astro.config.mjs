@@ -6,7 +6,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: replace with your real domain before deploying (used for sitemap, RSS, and canonical URLs)
   site: 'https://ramonmiklus.com',
 
   vite: {
