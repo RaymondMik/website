@@ -7,7 +7,7 @@ tags: [meta]
 
 > Architecture is about the important stuff. Whatever that is. — Ralph Johnson
 
-As a software engineer, there’s a huge amount of work accomplished and shipped every single day (even before AI). Writing is how I keep those lessons and context from fading. While most of my notes remain private, this site is the public, polished end of that habit.
+As a software engineer, there’s a huge amount of work you can accomplish and ship every single day. Writing is how I keep those lessons and context from fading. While most of my notes remain private, this site is the public, polished end of that habit.
 
 What to expect here:
 
