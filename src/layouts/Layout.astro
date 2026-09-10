@@ -58,6 +58,26 @@ const current = (section: string) =>
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta name="twitter:card" content="summary" />
+    <script is:inline>
+      // Apply the saved theme before first paint to avoid a flash of the wrong palette.
+      (() => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch {}
+        const mq = matchMedia("(prefers-color-scheme: dark)");
+        const apply = (t) => (document.documentElement.dataset.theme = t);
+        apply(stored === "light" || stored === "dark" ? stored : mq.matches ? "dark" : "light");
+        // Follow OS changes while the visitor has not picked a theme explicitly.
+        mq.addEventListener("change", (e) => {
+          let s = null;
+          try {
+            s = localStorage.getItem("theme");
+          } catch {}
+          if (s !== "light" && s !== "dark") apply(e.matches ? "dark" : "light");
+        });
+      })();
+    </script>
   </head>
   <body
     class="bg-paper text-ink font-serif antialiased min-h-dvh flex flex-col"
@@ -86,6 +106,45 @@ const current = (section: string) =>
             aria-current={current("/about")}
             class="text-muted hover:text-accent transition-colors">about</a
           >
+          <button
+            id="theme-toggle"
+            type="button"
+            hidden
+            aria-label="Switch to dark mode"
+            class="self-center text-muted hover:text-accent transition-colors cursor-pointer"
+          >
+            <svg
+              class="block dark:hidden"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg
+              class="hidden dark:block"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"
+              />
+            </svg>
+          </button>
         </div>
       </nav>
     </header>
@@ -127,5 +186,29 @@ const current = (section: string) =>
         </div>
       </div>
     </footer>
+
+    <script>
+      const root = document.documentElement;
+      const button = document.getElementById("theme-toggle");
+      if (button) {
+        const relabel = () => {
+          button.setAttribute(
+            "aria-label",
+            root.dataset.theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
+          );
+        };
+        button.addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          root.dataset.theme = next;
+          try {
+            localStorage.setItem("theme", next);
+          } catch {}
+          relabel();
+        });
+        matchMedia("(prefers-color-scheme: dark)").addEventListener("change", relabel);
+        relabel();
+        button.hidden = false;
+      }
+    </script>
   </body>
 </html>

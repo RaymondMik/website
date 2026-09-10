@@ -25,12 +25,12 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Architecture
 
-Personal/professional site (90% professional, 10% personal) for Ramón Miklus, centered on a software-engineering blog called **"Writing"**. Astro 7, static output, Tailwind v4 (via `@tailwindcss/vite`), no client-side JS.
+Personal/professional site (90% professional, 10% personal) for Ramón Miklus, centered on a software-engineering blog called **"Writing"**. Astro 7, static output, Tailwind v4 (via `@tailwindcss/vite`). The only client-side JS is the light/dark theme toggle in `Layout.astro`.
 
 - **Blog posts** live in `src/content/writing/*.md` as a content collection (schema in `src/content.config.ts`: title, description, pubDate, tags, draft). Adding a post = adding a Markdown file; `draft: true` excludes it everywhere.
 - **Routes** (`src/pages/`): `/` (intro + latest posts), `/writing/` (ledger index grouped by year), `/writing/[id]` (post pages via `getStaticPaths` + `render()`), `/about/`, `/rss.xml` (via `@astrojs/rss`). Sitemap comes from `@astrojs/sitemap`.
-- **Design system** is defined in `src/styles/global.css`: light/dark palettes as CSS vars on `:root` (switched by `prefers-color-scheme`), exposed as Tailwind utilities (`bg-paper`, `text-ink`, `text-muted`, `border-line`, `text-accent`) via `@theme inline`. Fonts are self-hosted Fontsource packages imported in `Layout.astro`: Archivo (display), Source Serif 4 (body prose), IBM Plex Mono (dates/tags/code/wordmark).
-- **Code highlighting**: Shiki dual themes (vitesse-light/dark) configured in `astro.config.mjs`, with the dark-mode switch handled in `global.css`.
+- **Design system** is defined in `src/styles/global.css`: light/dark palettes as CSS vars on `:root`, switched by a `data-theme` attribute on `<html>` (set by the toggle script in `Layout.astro`, persisted in localStorage, defaulting to `prefers-color-scheme`). A `@custom-variant dark` keys Tailwind's `dark:` utilities off that attribute. Palettes are exposed as Tailwind utilities (`bg-paper`, `text-ink`, `text-muted`, `border-line`, `text-accent`) via `@theme inline`. Fonts are self-hosted Fontsource packages imported in `Layout.astro`: Archivo (display), Source Serif 4 (body prose), IBM Plex Mono (dates/tags/code/wordmark).
+- **Code highlighting**: Shiki dual themes (github-light-default/github-dark-default) configured in `astro.config.mjs`, with a small transformer there that darkens the light comment colour to meet WCAG AA; the dark-mode switch is handled in `global.css`.
 - `Layout.astro` is the single page shell (head/meta/OG tags, header nav, footer); article prose uses `@tailwindcss/typography` with token overrides in `global.css`.
 
 The `site` URL in `astro.config.mjs` is a placeholder — it must be set to the real domain before deploying (affects canonical URLs, sitemap, RSS).
