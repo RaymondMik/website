@@ -8,6 +8,7 @@
 }
 
 :root {
+  color-scheme: light dark;
   --c-paper: #f7f7f5;
   --c-ink: #16181d;
   --c-muted: #5b6069;
@@ -82,6 +83,17 @@
   font-family: var(--font-mono);
   font-size: 0.875em;
   font-weight: 500;
+}
+
+/* Long inline code (e.g. in headings) must wrap rather than widen the page */
+.prose :not(pre) > code {
+  overflow-wrap: anywhere;
+}
+
+/* Don't compound the inline-code scale inside blocks: keep block code at the pre size */
+.prose pre code {
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .prose pre {

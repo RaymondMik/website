@@ -30,6 +30,10 @@ const social = [
 
 const pageTitle = title ? `${title} · Ramón Miklus` : "Ramón Miklus";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+/** `aria-current` value for a top-level nav link, based on the current path. */
+const current = (section: string) =>
+  Astro.url.pathname.startsWith(section) ? "page" : undefined;
 ---
 
 <!doctype html>
@@ -58,28 +62,35 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <body
     class="bg-paper text-ink font-serif antialiased min-h-dvh flex flex-col"
   >
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-paper focus:px-3 focus:py-2 font-mono text-sm"
+      >Skip to content</a
+    >
     <header class="w-full max-w-2xl mx-auto px-5 pt-8 pb-12 sm:pt-12 sm:pb-16">
       <nav class="flex items-baseline justify-between" aria-label="Main">
         <a
           href="/"
           class="font-mono text-sm font-medium tracking-tight hover:text-accent transition-colors"
-          title="Ramón Miklus — home"
+          aria-label="Ramón Miklus – home"
           >rm<span class="text-accent" aria-hidden="true">_</span></a
         >
         <div class="flex gap-6 font-mono text-sm">
           <a
             href="/writing/"
+            aria-current={current("/writing")}
             class="text-muted hover:text-accent transition-colors">writing</a
           >
           <a
             href="/about/"
+            aria-current={current("/about")}
             class="text-muted hover:text-accent transition-colors">about</a
           >
         </div>
       </nav>
     </header>
 
-    <main class="flex-1 w-full max-w-2xl mx-auto px-5">
+    <main id="main" class="flex-1 w-full max-w-2xl mx-auto px-5">
       <slot />
     </main>
 
@@ -98,8 +109,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
                 class="hover:text-accent transition-colors"
                 rel="me noopener"
                 target="_blank"
-                aria-label={label}
-                title={label}
+                aria-label={`${label} (opens in new tab)`}
               >
                 <svg
                   width="16"

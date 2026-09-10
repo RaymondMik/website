@@ -14,6 +14,7 @@ const { post } = Astro.props;
     <span
       class="block font-display font-semibold tracking-tight text-lg leading-snug group-hover:text-accent transition-colors"
     >{post.data.title}</span>
+    <span class="sr-only">, </span>
     <span class="mt-1 block font-mono text-xs text-muted">{readingTime(post)}</span>
   </a>
 </li>
