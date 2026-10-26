@@ -42,12 +42,6 @@ Every eval needs two things.
 
 **3. Human review: the ground truth.** People are slow and expensive graders, but they catch what automated checks miss and define what "good" really means. Use them to label your dataset, to calibrate model judges, and to spot-check production. Reviewing a sample of 50 real conversations each week is a common habit.
 
-| Method | Best for | Speed and cost | Trade-off |
-| --- | --- | --- | --- |
-| Code-based | Exact facts, formats, structure | Fast, nearly free | Can't judge nuance |
-| Model-based | Tone, relevance, faithfulness | Fast, moderate cost | Judge can be biased or wrong |
-| Human review | Ground truth, calibration | Slow, expensive | Doesn't scale |
-
 ## Getting started
 
 You don't need a huge framework to begin:
