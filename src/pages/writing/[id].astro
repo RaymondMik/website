@@ -18,9 +18,37 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
 const human = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const { pubDate, updatedDate } = post.data;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const personId = new URL('/#person', Astro.site).href;
+const postJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': canonical,
+  mainEntityOfPage: canonical,
+  url: canonical,
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: { '@id': personId },
+  publisher: { '@id': personId },
+  keywords: post.data.tags,
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  image: new URL('/og.png', Astro.site).href
+};
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+  tags={post.data.tags}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(postJsonLd)} />
   <article>
     <header class="mb-10">
       <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-xs text-muted">

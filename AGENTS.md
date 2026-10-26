@@ -33,7 +33,9 @@ Personal/professional site (90% professional, 10% personal) for Ramón Miklus, c
 - **Code highlighting**: Shiki dual themes (github-light-default/github-dark-default) configured in `astro.config.mjs`, with a small transformer there that darkens the light comment colour to meet WCAG AA; the dark-mode switch is handled in `global.css`.
 - `Layout.astro` is the single page shell (head/meta/OG tags, header nav, footer); article prose uses `@tailwindcss/typography` with token overrides in `global.css`.
 
-The `site` URL in `astro.config.mjs` is a placeholder — it must be set to the real domain before deploying (affects canonical URLs, sitemap, RSS).
+The `site` URL in `astro.config.mjs` is `https://ramonmiklus.com` and must match `public/CNAME` (it drives canonical URLs, Open Graph URLs, JSON-LD ids, sitemap and RSS). Deployment is GitHub Pages via `.github/workflows/deploy.yml` on push to `main`.
+
+- **SEO/meta**: `Layout.astro` emits title/description, canonical, Open Graph + Twitter tags (default image `public/og.png`), site-wide `WebSite` + `Person` JSON-LD, and accepts `type="article"` plus `publishedTime`/`modifiedTime`/`tags` for posts. Pages can inject extra `<head>` content via `<... slot="head">`; `writing/[id].astro` uses this for `BlogPosting` JSON-LD. `public/robots.txt` points crawlers at the sitemap, and the sitemap `lastmod` values come from post frontmatter (see `astro.config.mjs`).
 
 TypeScript uses Astro's `strict` preset. Note: `typescript` is pinned to 5.x in devDependencies because `astro check` is incompatible with TypeScript 7.
 

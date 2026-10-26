@@ -10,11 +10,14 @@ export async function GET(context) {
     title: 'Ramón Miklus — Writing',
     description: 'Personal notes and thoughts on software engineering by Ramón Miklus.',
     site: context.site,
+    customData: '<language>en</language>',
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.pubDate,
-      link: `/writing/${post.id}/`
+      link: `/writing/${post.id}/`,
+      author: 'hello@ramonmiklus.com (Ramón Miklus)',
+      categories: post.data.tags
     }))
   });
 }
