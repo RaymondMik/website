@@ -101,4 +101,5 @@ Leave a gap early, and the later layers stay ineffective until you go back and f
 
 - Anthropic, Usage Policy, High-risk Use Case Requirements (version effective 12 November 2026)
 - Anthropic, 2026 Usage Policy update, 8 October 2026
-- European Union, NIS2 Directive (EU) 2022/2555
+- [European Union, NIS2 Directive (EU) 2022/2555](https://eur-lex.europa.eu/eli/dir/2022/2555/oj/eng)
+- [Anthropic Academy](https://anthropic.skilljar.com/)
