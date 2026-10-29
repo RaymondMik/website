@@ -7,9 +7,7 @@ tags: [ai, governance]
 
 Leveraging LLMs to build AI systems can dramatically improve and speed up processes in both private companies and public administrations. However, it also introduces risks and responsibilities that whoever provides and maintains these systems has to take into account.
 
-Let's take as an example the Social Security Agency of an EU member state that wants to introduce an AI-based decision-support system for benefits eligibility, with the goal of making the review of thousands of applications dramatically faster. The system reads each application and the relevant public records, then recommends one of three outcomes: approve, deny, or refer to a caseworker.
-
-This Agency must of course comply with several EU obligations, such as the EU AI Act, the GDPR, the NIS2 directive, and national administrative law. This goes far beyond plugging an LLM and a system prompt into new or existing software. It requires a framework to define the rules, enforce them in real time, make decisions fair, explainable and supervised, and provide proof to auditors.
+Let's imagine for example how a Social Security Agency of an EU member state could leverage an AI-based decision-support system for benefits eligibility, with the goal of making the review of thousands of applications dramatically faster. The system reads each application and the relevant public records, then recommends one of three outcomes: approve, deny, or refer to a caseworker. This is a highly sensitive use case, because a wrong assessment could deprive people from benefits they would be entitled to. This Agency must of course comply with several EU obligations, such as the EU AI Act, the GDPR, the NIS2 directive, and national administrative law. This goes far beyond plugging an LLM and a system prompt into new or existing software. It requires a framework to define the rules, enforce them in real time, make decisions fair, explainable and supervised, and provide proof to auditors.
 
 That framework can be built in five layers. The order matters: each layer depends on the ones before it, and a gap early on weakens everything built on top of it.
 
@@ -64,8 +62,6 @@ How to implement it:
 
 This is what the EU AI Act calls human oversight, which it requires for high-risk systems such as those assessing eligibility for public benefits.
 
-Model providers set similar rules. Anthropic's Usage Policy lists eligibility for government benefits as a high-risk area: a qualified person must review each recommendation, with authority to change it, and the applicant must be told AI was involved. Decisions wholly favorable to the applicant, such as granting a benefit, can skip review where the law allows.
-
 ## Layer 5: Prove it with a control register
 
 The control register is the accountability record. It links each obligation to the control that satisfies it, a named owner, and the evidence that shows the control works. When an auditor asks "how do you comply with this?", the register answers.
@@ -80,15 +76,6 @@ The control register is the accountability record. It links each obligation to t
 
 How to implement it: start the register before development, not after. Review it on a fixed schedule, and update it whenever the system's purpose, model or policy changes.
 
-## Before go-live: test, then keep testing
-
-The five layers describe the system in operation, but a high-risk system has to earn trust before it touches a real application.
-
-- **Test on past cases:** run the system on applications caseworkers have already decided, and measure the wrongful-denial rate overall and by group.
-- **Red-team it:** try manipulated inputs, forged-looking documents and edge cases near the threshold.
-- **Start in shadow mode:** the AI recommends while caseworkers decide independently; compare the two before giving it any real influence.
-- **Re-test on every change:** a new model version, prompt or rule can shift results. Providers also retire models, so plan for migration.
-
 ## Why the order matters
 
 These five layers are a dependency chain, not a checklist. Explicit rules make real-time enforcement possible. Logging makes fairness audits, explanations and human review possible. The control register makes all of it provable.
@@ -99,7 +86,6 @@ Leave a gap early, and the later layers stay ineffective until you go back and f
 
 ## Sources
 
-- Anthropic, Usage Policy, High-risk Use Case Requirements (version effective 12 November 2026)
-- Anthropic, 2026 Usage Policy update, 8 October 2026
-- [European Union, NIS2 Directive (EU) 2022/2555](https://eur-lex.europa.eu/eli/dir/2022/2555/oj/eng)
 - [Anthropic Academy](https://anthropic.skilljar.com/)
+- [European Union, NIS2 Directive (EU) 2022/2555](https://eur-lex.europa.eu/eli/dir/2022/2555/oj/eng)
+- [European Union, AI Act, Article 14: Human oversight](https://artificialintelligenceact.eu/article/14/)
