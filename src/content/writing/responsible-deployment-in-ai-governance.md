@@ -2,12 +2,12 @@
 title: "Responsible Deployment in AI Governance: Making an AI System Safe, Compliant and Accountable for Its Decisions"
 description: "A five-layer framework for deploying an LLM-based decision-support system in a high-risk setting: explicit rules, runtime enforcement, fairness and logging, human oversight, and a control register."
 pubDate: 2026-10-28
-tags: [ai, governance]
+tags: [ai, ai-engineering, ai-architecture, governance]
 ---
 
 Leveraging LLMs to build AI systems can dramatically improve and speed up processes in both private companies and public administrations. However, it also introduces risks and responsibilities that whoever provides and maintains these systems has to take into account.
 
-Let's imagine for example how a Social Security Agency of an EU member state could leverage an AI-based decision-support system for benefits eligibility, with the goal of making the review of thousands of applications dramatically faster. The system reads each application and the relevant public records, then recommends one of three outcomes: approve, deny, or refer to a caseworker. This is a highly sensitive use case, because a wrong assessment could deprive people from benefits they would be entitled to. This Agency must of course comply with several EU obligations, such as the EU AI Act, the GDPR, the NIS2 directive, and national administrative law. This goes far beyond plugging an LLM and a system prompt into new or existing software. It requires a framework to define the rules, enforce them in real time, make decisions fair, explainable and supervised, and provide proof to auditors.
+Let's imagine, for example, how a Social Security Agency of an EU member state could use an AI-based decision-support system for benefits eligibility, with the goal of making the review of thousands of applications much faster. The system reads each application and the relevant public records, then recommends one of three outcomes: approve, deny, or refer to a caseworker. This is a highly sensitive use case, because a wrong assessment could deprive people of benefits they are entitled to. This Agency must of course comply with several EU obligations, such as the EU AI Act, the GDPR, the NIS2 Directive, and national administrative law. This goes far beyond plugging an LLM and a system prompt into new or existing software. It requires a framework to define the rules, enforce them in real time, make decisions fair, explainable and supervised, and provide proof to auditors.
 
 That framework can be built in five layers. The order matters: each layer depends on the ones before it, and a gap early on weakens everything built on top of it.
 
@@ -43,7 +43,7 @@ The outputs most at risk of bias are the recommendation itself and the reason at
 How to implement it:
 
 - **Measure errors, not just outcomes:** groups can genuinely differ in eligibility, so different denial rates aren't automatically unfair. Track wrongful denials by group, for example those overturned by reviewers or on appeal.
-- **Plan for the data that requires:** the Agency often doesn't hold attributes like ethnicity, and the GDPR restricts processing them. The AI Act allows it for bias detection only under strict safeguards, so settle the legal basis early.
+- **Plan for the data this requires:** the Agency often doesn't hold attributes like ethnicity, and the GDPR restricts processing them. The AI Act allows it for bias detection only under strict safeguards, so settle the legal basis early.
 - **Check features for proxies, alone and combined:** "years of contributions in this country" can penalize recent immigrants, and harmless-looking features can combine into a proxy.
 - **Log what's needed to rebuild a decision:** inputs, the snapshot of records retrieved at decision time, rules, prompt and model versions, and the output. Set retention periods and strict access: the logs are personal data too.
 
