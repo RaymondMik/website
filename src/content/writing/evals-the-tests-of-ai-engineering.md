@@ -1,5 +1,5 @@
 ---
-title: "Evals: The Tests of AI Engineering"
+title: "Evals: Bringing Test Discipline to LLM Systems"
 description: "Evals are to LLM-based systems what tests are to traditional software: a dataset, a way to score the output, and three ways to grade it."
 pubDate: 2026-10-06
 tags: [ai, testing]
