@@ -32,3 +32,7 @@ rewind(s, "before_experiment",
 ```
 
 The cost is that anything learned after the checkpoint is gone. The optional `carry_over` keeps the one useful lesson without the noise that produced it.
+
+## 2. Compaction: summarize the past, keep the present
+
+Compaction replaces older turns with a summary and keeps the most recent turns word for word. Use it when the session is nearing the limit but the agent still needs what it has learned.
