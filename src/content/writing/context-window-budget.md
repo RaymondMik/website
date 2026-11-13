@@ -36,3 +36,20 @@ The cost is that anything learned after the checkpoint is gone. The optional `ca
 ## 2. Compaction: summarize the past, keep the present
 
 Compaction replaces older turns with a summary and keeps the most recent turns word for word. Use it when the session is nearing the limit but the agent still needs what it has learned.
+
+The summarizer prompt decides what the agent remembers afterwards. "Summarize the conversation so far" loses exactly the details the next step depends on. Name what must survive:
+
+```python
+SUMMARIZER_PROMPT = """Summarize this agent session, preserving exactly:
+- every file path created, modified or deleted
+- every decision made, with its reason
+- every error and how it was resolved
+- open tasks and the current next step"""
+
+def maybe_compact(session, budget=150_000, threshold=0.7):
+    used = client.messages.count_tokens(
+        model=MODEL, system=session.system, messages=session.messages
+    ).input_tokens
+    if used > budget * threshold:
+        compact(session, keep_recent_turns=4)
+```
