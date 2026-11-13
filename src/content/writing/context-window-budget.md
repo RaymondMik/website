@@ -111,3 +111,12 @@ s.send(f"Call sites found:\n{finding}\nNow write the retry decorator.")
 ```
 
 Every file the subagent opened is thrown away with its context. The main session pays only for `finding`. What you lose is visibility into how the subagent reached its answer.
+
+## Choosing between them
+
+| Strategy | Reach for it when | What you give up |
+| --- | --- | --- |
+| Pruning | The agent took a wrong turn | Whatever it learned after the checkpoint |
+| Compaction | You're near the limit on the same task | Details the summary leaves out |
+| Clearing | The next task is unrelated | Everything not saved to notes |
+| Subagents | A subtask is self-contained | How the answer was reached |
