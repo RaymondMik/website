@@ -81,3 +81,31 @@ s = clear(base_system)
 ```
 
 The notes file becomes the only memory between sessions. Keep it short and factual, because it is loaded into every new session's system prompt.
+
+## 4. Subagent handoffs: delegate the journey, keep the answer
+
+A subagent works in its own context window. It gets a scoped task, the minimum context it needs, its own tools and a clear exit condition. It does the messy work, and only a short summary comes back. Use it for exploration, where the search is long but the answer is short.
+
+```python
+def run_subagent(task, context, tools, tool_impls, max_steps=15):
+    system = ("You are a subagent on one scoped task. When done, reply with "
+              "'RESULT:' and a concise summary with exact paths and values.")
+    messages = [{"role": "user",
+                 "content": f"<task>{task}</task>\n<context>{context}</context>"}]
+    for _ in range(max_steps):
+        resp = client.messages.create(model=SUBAGENT_MODEL, max_tokens=2048,
+                                      system=system, tools=tools, messages=messages)
+        messages.append({"role": "assistant", "content": resp.content})
+        if resp.stop_reason != "tool_use":
+            return "".join(b.text for b in resp.content if b.type == "text")
+        messages.append({"role": "user", "content": [
+            {"type": "tool_result", "tool_use_id": b.id,
+             "content": str(tool_impls[b.name](**b.input))[:20_000]}
+            for b in resp.content if b.type == "tool_use"]})
+    return "Step limit reached without a result."
+
+finding = run_subagent("List every call site of ApiClient.request.",
+                       "Python project; client is in api_client.py.",
+                       SUBAGENT_TOOLS, SUBAGENT_IMPLS)
+s.send(f"Call sites found:\n{finding}\nNow write the retry decorator.")
+```
