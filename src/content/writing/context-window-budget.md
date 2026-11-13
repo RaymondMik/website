@@ -120,3 +120,5 @@ Every file the subagent opened is thrown away with its context. The main session
 | Compaction | You're near the limit on the same task | Details the summary leaves out |
 | Clearing | The next task is unrelated | Everything not saved to notes |
 | Subagents | A subtask is self-contained | How the answer was reached |
+
+Two API features make all four cheaper. Prompt caching (a `cache_control` breakpoint on your system prompt and tool definitions) lets later turns reuse that stable prefix at a fraction of the cost. Token counting tells you how close you are to the limit before a request fails, not after.
