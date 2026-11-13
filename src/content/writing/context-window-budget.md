@@ -53,3 +53,5 @@ def maybe_compact(session, budget=150_000, threshold=0.7):
     if used > budget * threshold:
         compact(session, keep_recent_turns=4)
 ```
+
+`compact()` sends the older turns to Claude with that prompt, then rebuilds the history as one summary message plus the recent turns. Two details matter. The history must still alternate user and assistant turns, and the cut must never separate a `tool_use` from its `tool_result`, or the API rejects the request.
