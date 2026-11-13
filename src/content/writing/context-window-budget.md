@@ -79,3 +79,5 @@ def clear(base_system):
 save_note("api_client.py has a synchronous @retry decorator (3 attempts).")
 s = clear(base_system)
 ```
+
+The notes file becomes the only memory between sessions. Keep it short and factual, because it is loaded into every new session's system prompt.
