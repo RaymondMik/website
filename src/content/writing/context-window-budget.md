@@ -61,3 +61,21 @@ The `count_tokens` call measures the real size before the request goes out, so c
 ## 3. Clearing: start fresh, on purpose
 
 Clearing starts a new session with an empty context. Use it when the next task has nothing to do with the last one, and old context would only bias or confuse the agent.
+
+Nothing carries over, so whatever must survive has to be written somewhere persistent first, the way Claude Code uses a CLAUDE.md file:
+
+```python
+NOTES_FILE = Path("PROJECT_NOTES.md")
+
+def save_note(text):
+    with NOTES_FILE.open("a") as f:
+        f.write(f"- {text}\n")
+
+def clear(base_system):
+    notes = NOTES_FILE.read_text() if NOTES_FILE.exists() else ""
+    system = base_system + (f"\n\n<project_notes>\n{notes}</project_notes>" if notes else "")
+    return Session(system=system)
+
+save_note("api_client.py has a synchronous @retry decorator (3 attempts).")
+s = clear(base_system)
+```
