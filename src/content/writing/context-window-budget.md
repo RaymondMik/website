@@ -57,3 +57,7 @@ def maybe_compact(session, budget=150_000, threshold=0.7):
 `compact()` sends the older turns to Claude with that prompt, then rebuilds the history as one summary message plus the recent turns. Two details matter. The history must still alternate user and assistant turns, and the cut must never separate a `tool_use` from its `tool_result`, or the API rejects the request.
 
 The `count_tokens` call measures the real size before the request goes out, so compaction runs only when it's needed. If you'd rather not write this yourself, the API also offers server-side compaction as a beta feature.
+
+## 3. Clearing: start fresh, on purpose
+
+Clearing starts a new session with an empty context. Use it when the next task has nothing to do with the last one, and old context would only bias or confuse the agent.
