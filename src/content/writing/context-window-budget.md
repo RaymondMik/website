@@ -30,3 +30,5 @@ s.send("Try rewriting the client with asyncio.")
 rewind(s, "before_experiment",
        carry_over="An asyncio rewrite breaks sync callers; stay synchronous.")
 ```
+
+The cost is that anything learned after the checkpoint is gone. The optional `carry_over` keeps the one useful lesson without the noise that produced it.
