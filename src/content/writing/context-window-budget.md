@@ -122,3 +122,5 @@ Every file the subagent opened is thrown away with its context. The main session
 | Subagents | A subtask is self-contained | How the answer was reached |
 
 Two API features make all four cheaper. Prompt caching (a `cache_control` breakpoint on your system prompt and tool definitions) lets later turns reuse that stable prefix at a fraction of the cost. Token counting tells you how close you are to the limit before a request fails, not after.
+
+All of this adds code, so measure your real token usage first. If your sessions never come near the limit, you don't need it. If they do, design for it from the start rather than patching it after a production failure.
