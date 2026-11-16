@@ -95,3 +95,25 @@ async def get_movie(title: str) -> str:
     return "\n\n".join(_format_movie(m) for m in movies)
 ```
 
+The app uses them for the two jobs resources are best at.
+
+**1. Filling the UI.** When the CLI starts, it reads `movies://titles` once and feeds the list into the autocomplete. Typing `@Back to` and pressing Tab offers *Back to the Future* and *Back to the Future Part II*. Claude is never involved.
+
+**2. Adding context to the conversation.** When a message mentions a movie with `@`, the app fetches that movie's details and adds them to the prompt before Claude sees it:
+
+```python
+async def _extract_resources(self, query: str) -> str:
+    remaining = query.lower()
+    mentioned = []
+
+    titles = await self.list_movie_titles()
+    for title in sorted(titles, key=len, reverse=True):
+        needle = f"@{title.lower()}"
+        if needle in remaining:
+            remaining = remaining.replace(needle, " ")
+            mentioned.append((title, await self.get_movie(title)))
+    ...
+```
+
+The difference from a tool is the important part. If I ask *"Compare @Die Hard with @Lethal Weapon"*, Claude doesn't spend a round trip deciding to look them up; the details are already in the message. The app knows the user wants these movies, so it doesn't wait for the model to work that out.
+
