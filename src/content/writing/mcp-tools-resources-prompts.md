@@ -152,3 +152,19 @@ Two design choices:
 - **The prompt fetches its own data.** It doesn't tell Claude to call `get_movie_by_title`; it puts the movie's details straight into the message. That's one less round trip and one less thing to go wrong.
 - **It's read-only on purpose.** The summary is shown, not saved. Ratings are the only thing users can edit in this app, and I wanted the prompt to follow the same rule, so it says outright that no tools should be called.
 
+## Choosing the right primitive
+
+| | Tool | Resource | Prompt |
+| --- | --- | --- | --- |
+| **Who triggers it** | The model | Your app | The user |
+| **What it's for** | Giving Claude new abilities | Getting data into the UI or the context | Ready-made workflows run on demand |
+| **In this project** | `get_movie_by_title`, `update_movie_rating` | Autocomplete and `@` mentions | `/summarize_description` |
+
+When I add a feature now, I ask three questions:
+
+1. **Should Claude be able to do this on its own, mid-conversation?** Make it a tool.
+2. **Does my app need this data for the screen, or for context it can attach itself?** Make it a resource.
+3. **Is this a workflow a user will want to start on purpose, with the same instructions every time?** Make it a prompt.
+
+The same capability can show up more than once. Looking up a movie is a tool (Claude searches when it needs to), a resource (the app attaches it when you `@` mention it) and part of a prompt (the summary workflow embeds it). Same data, three different people deciding when to fetch it.
+
