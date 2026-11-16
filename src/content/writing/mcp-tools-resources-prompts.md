@@ -72,3 +72,9 @@ while True:
 
 When I type *"Set the rating of The Goonies to 8.5"*, nothing in my code parses that sentence. Claude sees a tool whose description matches, fills in `title` and `rating`, and the loop runs the call. That's what "model-controlled" means in practice.
 
+A few things I learned writing tools:
+
+- **The description is the interface.** Claude never sees your SQL, only the name, the description and the parameter schema. A description written for a person ("updates a movie") gives you worse calls than one written for the model ("identified by its exact title… If several movies share the title, release_year is required").
+- **Put limits in the schema.** `Field(ge=0, le=10)` becomes `minimum` and `maximum` in the JSON schema Claude receives, and the server rejects bad values before any of my code runs.
+- **Make writes strict and errors helpful.** The read tool, `get_movie_by_title`, accepts partial titles. The write tool needs an exact title so a near-match can't overwrite the wrong movie. When it fails, the error tells the model what to do next: *"Use get_movie_by_title to find the exact title"* or *"Pass release_year to choose one."* Claude reads tool errors, so they work as instructions.
+
