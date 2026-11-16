@@ -117,3 +117,8 @@ async def _extract_resources(self, query: str) -> str:
 
 The difference from a tool is the important part. If I ask *"Compare @Die Hard with @Lethal Weapon"*, Claude doesn't spend a round trip deciding to look them up; the details are already in the message. The app knows the user wants these movies, so it doesn't wait for the model to work that out.
 
+This part had two gotchas that are worth sharing:
+
+- **Titles aren't clean URI segments.** "When Harry Met Sally..." and "Mad Max 2: The Road Warrior" contain spaces, colons and punctuation. FastMCP matches resource templates against the raw URI without decoding it, so the client encodes each title with `quote(title, safe="")` and the server decodes it with `unquote`.
+- **Match the longest titles first.** Mentions are searched as `@<title>` rather than by splitting on spaces, because titles span several words. Checking longer titles first means `@Back to the Future Part II` isn't also read as `@Back to the Future`.
+
