@@ -168,3 +168,8 @@ When I add a feature now, I ask three questions:
 
 The same capability can show up more than once. Looking up a movie is a tool (Claude searches when it needs to), a resource (the app attaches it when you `@` mention it) and part of a prompt (the summary workflow embeds it). Same data, three different people deciding when to fetch it.
 
+## Wrapping up
+
+Tools serve the model, resources serve your app, and prompts serve your users. Once I started asking "who decides when this runs?" instead of "how do I expose this data?", the design choices mostly made themselves, and the app became more predictable: Claude handles what needs judgment, the app handles what it already knows, and users get shortcuts for what they do often.
+
+If you're starting with MCP, build something small with all three. A database you know well, one tool, one resource and one prompt will teach you more than any diagram, including the ones in this post.
