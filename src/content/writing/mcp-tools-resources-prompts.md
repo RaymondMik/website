@@ -122,3 +122,33 @@ This part had two gotchas that are worth sharing:
 - **Titles aren't clean URI segments.** "When Harry Met Sally..." and "Mad Max 2: The Road Warrior" contain spaces, colons and punctuation. FastMCP matches resource templates against the raw URI without decoding it, so the client encodes each title with `quote(title, safe="")` and the server decodes it with `unquote`.
 - **Match the longest titles first.** Mentions are searched as `@<title>` rather than by splitting on spaces, because titles span several words. Checking longer titles first means `@Back to the Future Part II` isn't also read as `@Back to the Future`.
 
+## Prompts: the user decides
+
+A prompt is a ready-made workflow that the server defines and the user starts on purpose, with a button, a menu item or, here, a slash command.
+
+```python
+@mcp.prompt(
+    name="summarize_description",
+    description="Summarize a movie's description in 50 words or fewer",
+)
+async def summarize_description(
+    title: str = Field(description="The exact title of the movie to summarize"),
+) -> list[base.Message]:
+    movies = await _movies_with_title(title)
+    details = "\n\n".join(_format_movie(m) for m in movies)
+
+    prompt = f"""
+    Summarize the description of the movie below in 50 words or fewer.
+    ...
+    The stored description must not be changed, so don't call any tools.
+    """
+    return [base.UserMessage(prompt)]
+```
+
+The user types `/summarize_description Ferris Bueller's Day Off` (both the command and the title autocomplete). The app asks the server to render the prompt, converts the returned messages into the Anthropic message format, and sends them to Claude. The user chose to run this exact workflow, and the server author chose its wording, so you get the same carefully written instructions every time instead of whatever the user improvises.
+
+Two design choices:
+
+- **The prompt fetches its own data.** It doesn't tell Claude to call `get_movie_by_title`; it puts the movie's details straight into the message. That's one less round trip and one less thing to go wrong.
+- **It's read-only on purpose.** The summary is shown, not saved. Ratings are the only thing users can edit in this app, and I wanted the prompt to follow the same rule, so it says outright that no tools should be called.
+
