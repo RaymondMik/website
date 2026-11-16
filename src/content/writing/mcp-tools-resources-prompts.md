@@ -23,3 +23,30 @@ Each primitive takes a different path through the app:
   User   ──(types a /command)─────────▶ Prompt     summarize_description
 ```
 
+## Tools: the model decides
+
+A tool is a function you hand to the model along with a description of what it does. Your code never calls it directly; Claude reads the description and decides when to use it.
+
+Here's the tool that changes a movie's rating:
+
+```python
+@mcp.tool(
+    name="update_movie_rating",
+    description=(
+        "Change the rating of a movie, identified by its exact title "
+        "(case-insensitive). Only the rating can be changed. If several "
+        "movies share the title, release_year is required. Returns the "
+        "updated movie."
+    ),
+)
+async def update_movie_rating(
+    title: str = Field(description="The exact title of the movie to update"),
+    rating: float = Field(ge=0, le=10, description="The new rating, from 0 to 10 (stored with one decimal)"),
+    release_year: int | None = Field(
+        default=None,
+        description="Release year, only needed when several movies share the title",
+    ),
+) -> dict:
+    ...
+```
+
