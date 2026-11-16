@@ -50,3 +50,25 @@ async def update_movie_rating(
     ...
 ```
 
+On the app side, the chat loop doesn't know which tools exist. It asks every connected MCP server for its tools, passes the list to Claude, and runs whatever Claude asks for:
+
+```python
+while True:
+    response = self.claude_service.chat(
+        messages=self.messages,
+        tools=await ToolManager.get_all_tools(self.clients),
+    )
+    self.claude_service.add_assistant_message(self.messages, response)
+
+    if response.stop_reason == "tool_use":
+        tool_result_parts = await ToolManager.execute_tool_requests(
+            self.clients, response
+        )
+        self.claude_service.add_user_message(self.messages, tool_result_parts)
+    else:
+        ...
+        break
+```
+
+When I type *"Set the rating of The Goonies to 8.5"*, nothing in my code parses that sentence. Claude sees a tool whose description matches, fills in `title` and `rating`, and the loop runs the call. That's what "model-controlled" means in practice.
+
