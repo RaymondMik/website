@@ -78,3 +78,20 @@ A few things I learned writing tools:
 - **Put limits in the schema.** `Field(ge=0, le=10)` becomes `minimum` and `maximum` in the JSON schema Claude receives, and the server rejects bad values before any of my code runs.
 - **Make writes strict and errors helpful.** The read tool, `get_movie_by_title`, accepts partial titles. The write tool needs an exact title so a near-match can't overwrite the wrong movie. When it fails, the error tells the model what to do next: *"Use get_movie_by_title to find the exact title"* or *"Pass release_year to choose one."* Claude reads tool errors, so they work as instructions.
 
+## Resources: the app decides
+
+A resource is data the server exposes at a URI. Unlike a tool, it isn't offered to the model. Your application decides when to read it and what to do with the result.
+
+The server exposes two:
+
+```python
+@mcp.resource("movies://titles", mime_type="application/json")
+async def list_movie_titles() -> list[str]:
+    ...
+
+@mcp.resource("movies://titles/{title}", mime_type="text/plain")
+async def get_movie(title: str) -> str:
+    movies = await _movies_with_title(unquote(title))
+    return "\n\n".join(_format_movie(m) for m in movies)
+```
+
