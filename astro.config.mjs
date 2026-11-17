@@ -60,6 +60,8 @@ export default defineConfig({
 
   integrations: [
     sitemap({
+      // /privacy/ is noindex: keep crawlers on the writing.
+      filter: (page) => new URL(page).pathname !== '/privacy/',
       serialize(item) {
         const path = new URL(item.url).pathname;
         const lastmod = lastmods[path];

@@ -1,5 +1,6 @@
 ---
 title: "Responsible Deployment in AI Governance: Making an AI System Safe, Compliant and Accountable for Its Decisions"
+seoTitle: "Responsible AI Deployment: a Governance Framework"
 description: "A five-layer framework for deploying an LLM-based decision-support system in a high-risk setting: explicit rules, runtime enforcement, fairness and logging, human oversight, and a control register."
 pubDate: 2026-10-28
 tags: [ai, ai-engineering, ai-architecture, governance]
