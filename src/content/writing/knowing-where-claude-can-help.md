@@ -1,5 +1,6 @@
 ---
 title: "On the Importance of Knowing Where Claude Can Help, and Where It Can't (a.k.a. \"Decomposition\")"
+seoTitle: "Where Claude Can Help, and Where It Can't"
 description: "LLMs are probabilistic. Before handing a workflow to Claude, split it into what belongs to the model, what belongs to your existing system, and what belongs to a human."
 pubDate: 2026-09-30
 tags: [ai, architecture]
