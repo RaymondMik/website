@@ -1,6 +1,6 @@
 ---
 title: "Tools, Resources and Prompts: Who Pulls the Trigger in MCP?"
-date: 2026-10-10
+pubDate: 2026-10-10
 description: "A hands-on look at the three MCP server primitives, using a small terminal chat app over a PostgreSQL database of 1980s movies."
 tags: [mcp, llm, claude, python, postgresql]
 draft: true
