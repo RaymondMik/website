@@ -1,5 +1,6 @@
 ---
 title: "Upgrading to pnpm 11: Postinstall Scripts, Supply Chain Security, and What You Need to Know"
+seoTitle: "Upgrading to pnpm 11: Postinstall Scripts"
 description: "pnpm 11 stops running dependency build scripts by default. What changed, why it's a real security win, and how to audit what you whitelist."
 pubDate: 2026-05-18
 tags: [security, tooling]

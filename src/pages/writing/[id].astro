@@ -14,6 +14,16 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
+// Up to three other posts sharing the most tags with this one, newest first
+// on ties. Gives readers (and crawlers) a path between related posts.
+const related = (await getCollection('writing', ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .map((p) => ({ p, shared: p.data.tags.filter((t) => post.data.tags.includes(t)).length }))
+  .filter(({ shared }) => shared > 0)
+  .sort((a, b) => b.shared - a.shared || b.p.data.pubDate.valueOf() - a.p.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map(({ p }) => p);
+
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 const human = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -41,7 +51,7 @@ const postJsonLd = {
 ---
 
 <Layout
-  title={post.data.title}
+  title={post.data.seoTitle ?? post.data.title}
   description={post.data.description}
   type="article"
   publishedTime={pubDate}
@@ -73,6 +83,28 @@ const postJsonLd = {
       {updatedDate && <span> · Updated <time datetime={iso(updatedDate)}>{human(updatedDate)}</time></span>}
     </footer>
   </article>
+
+  {
+    related.length > 0 && (
+      <section class="mt-16" aria-labelledby="related-heading">
+        <h2 id="related-heading" class="font-mono text-xs text-muted uppercase tracking-wide">
+          Related writing
+        </h2>
+        <ul class="mt-4 space-y-3">
+          {related.map((p) => (
+            <li>
+              <a
+                href={`/writing/${p.id}/`}
+                class="font-display font-bold tracking-tight hover:text-accent transition-colors"
+              >
+                {p.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   <p class="mt-16">
     <a
