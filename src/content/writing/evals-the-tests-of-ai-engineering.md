@@ -2,6 +2,7 @@
 title: "Evals: Bringing Test Discipline to LLM Systems"
 description: "Evals are to LLM-based systems what tests are to traditional software: a dataset, a way to score the output, and three ways to grade it."
 pubDate: 2026-10-06
+updatedDate: 2026-11-25
 tags: [ai, testing]
 ---
 
@@ -50,5 +51,3 @@ You don't need a huge framework to begin:
 - **Automate first.** Write code-based checks for everything they can cover, and add a model judge only where you need one.
 - **Run evals on every change**, just like a CI test suite, and track the score over time.
 - **Feed failures back.** Every bug found in production becomes a new test case.
-
-Software engineers learned long ago that untested code is broken code you haven't caught yet. The same is true for AI systems.
