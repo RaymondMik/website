@@ -1,12 +1,11 @@
 ---
-title: "Tools, Resources and Prompts: Who Pulls the Trigger in MCP?"
-pubDate: 2026-10-10
-description: "A hands-on look at the three MCP server primitives, using a small terminal chat app over a PostgreSQL database of 1980s movies."
+title: "Tools, Resources and Prompts: Who's in Control in MCP?"
+pubDate: 2026-11-06
+description: "A hands-on look at the three MCP server primitives."
 tags: [mcp, llm, claude, python, postgresql]
-draft: true
 ---
 
-This article walks through the three MCP server primitives (tools, resources and prompts) using a small terminal chat app that talks to a PostgreSQL database of 1980s movies. The MCP server is written in Python with FastMCP and exposes the database to Claude, which decides when to call its tools, while the app handles resources and the user triggers prompts with slash commands.
+This post walks through the three MCP server primitives (tools, resources and prompts) using a [small terminal chat app](https://github.com/RaymondMik/mcp-template) that talks to a PostgreSQL database of 1980s movies. The MCP server is written in Python with FastMCP and exposes the database to Claude, which decides when to call its tools, while the app handles resources and the user triggers prompts with slash commands.
 
 What sets the three apart is who is in control:
 
@@ -18,9 +17,9 @@ What sets the three apart is who is in control:
 Each primitive takes a different path through the app:
 
 ```
-  Claude ──(decides to call)──────────▶ Tool       get_movie_by_title, update_movie_rating
-  App    ──(fetches when it needs)────▶ Resource   movies://titles, movies://titles/{title}
-  User   ──(types a /command)─────────▶ Prompt     summarize_description
+  Claude ── (decides to call) ──────────▶ Tool
+  App    ── (fetches when it needs) ────▶ Resource
+  User   ── (types a /command) ─────────▶ Prompt
 ```
 
 ## Tools: the model decides
@@ -171,5 +170,3 @@ The same capability can show up more than once. Looking up a movie is a tool (Cl
 ## Wrapping up
 
 Tools serve the model, resources serve your app, and prompts serve your users. Once I started asking "who decides when this runs?" instead of "how do I expose this data?", the design choices mostly made themselves, and the app became more predictable: Claude handles what needs judgment, the app handles what it already knows, and users get shortcuts for what they do often.
-
-If you're starting with MCP, build something small with all three. A database you know well, one tool, one resource and one prompt will teach you more than any diagram, including the ones in this post.
